@@ -9,7 +9,6 @@ namespace AutoTrader
         {
             using (IWebDriver driver = new ChromeDriver(@"..\..\..\lib\ChromeDriver"))
             {
-                // driver.Navigate().GoToUrl("http://www.google.com");
                 driver.Navigate().GoToUrl("http://www.ebay.co.uk/sch/Computer-IT-/171265/i.html?_pgn=2&_skc=50&rt=nc");
                 var elements = driver.FindElements(By.CssSelector("a.vip"));
                 var pages = driver.FindElements(By.CssSelector(".gspr.next"));
