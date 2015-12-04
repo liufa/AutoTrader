@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader", "AutoTrader\AutoTrader.csproj", "{F59428B6-6B9A-4E2B-8E32-C4E9A72E9B4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Crawler", "AutoTrader\AutoTrader.Crawler.csproj", "{F59428B6-6B9A-4E2B-8E32-C4E9A72E9B4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
