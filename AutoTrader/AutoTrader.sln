@@ -5,6 +5,11 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoTrader.Crawler", "AutoTrader\AutoTrader.Crawler.csproj", "{F59428B6-6B9A-4E2B-8E32-C4E9A72E9B4C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{91B5D835-D7EF-4350-93B4-FF4772352B09}"
+	ProjectSection(SolutionItems) = preProject
+		lib\ChromeDriver\chromedriver.exe = lib\ChromeDriver\chromedriver.exe
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
