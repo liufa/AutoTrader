@@ -24,7 +24,8 @@ namespace AutoTrader.Manager.Controllers
         {
             using (var db = new AutoTrader.Data.TraderEntities())
             {
-                return View(db.Item.Where(o => !o.Product.HasValue).ToList());
+                var model = db.Item.Where(o => !o.Product.HasValue).ToList();
+                return View(model);
             }
         }
     }

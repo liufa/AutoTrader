@@ -31,10 +31,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink(item.Name.Substring(0, Math.Min(item.Name.Length,256)), "ItemDetails", new { id = item.Id })
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Url)
+            <a href="@item.Url"> @(new System.Uri(item.Url).Host)</a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Price)
@@ -46,7 +46,7 @@
             @Html.DisplayFor(modelItem => item.Product)
         </td>
         <td>
-            @Html.ActionLink("Details", "ItemDetails", new { id=item.Id }) |
+
             @Html.ActionLink("Delete", "ItemDelete", new { id=item.Id })
         </td>
     </tr>
