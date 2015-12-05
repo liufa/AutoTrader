@@ -12,9 +12,17 @@
                 $.ajax({
                     url: "../../Json/LookupProduct?name="+value,
                 }).done(function (data) {
-                    $.each(data, function (item, index) {
+                    $.each(data, function (index, item) {
                         $(productListContainer).append("<p><a>" + item.Name + "</a></p>");
                     });
+                });
+            };
+            function addProduct() {
+                var value = $("[name='Product.Name']").val();
+                $.ajax({
+                    url: "../../Json/AddProduct?name=" + value,
+                }).done(function (data) {
+                    $(productListContainer).append("<p><a>" + data.Name + "</a></p>");
                 });
             };
 </script>
@@ -59,7 +67,8 @@
         </dt>
 
         <dd>
-            <input class="text-box single-line" id="Product_Name" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="" />
+            <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="" />
+            <a onclick="addProduct()">Add Product</a>
             <div id="productListContainer">
 
             </div>
@@ -67,7 +76,4 @@
 
     </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
