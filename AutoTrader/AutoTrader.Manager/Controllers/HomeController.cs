@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data.Entity;
 
 namespace AutoTrader.Manager.Controllers
 {
@@ -22,10 +23,18 @@ namespace AutoTrader.Manager.Controllers
 
         public ActionResult ItemsWithoutProduct()
         {
-            using (var db = new AutoTrader.Data.TraderEntities())
+            using (var db = new Data.TraderEntities())
             {
                 var model = db.Item.Where(o => !o.Product.HasValue).ToList();
                 return View(model);
+            }
+        }
+
+        public ActionResult ItemDetails(int id)
+        {
+            using (var db = new Data.TraderEntities())
+            {
+                return View(db.Item.Include(o => o.Product1).Single(o => o.Id == id));
             }
         }
     }
