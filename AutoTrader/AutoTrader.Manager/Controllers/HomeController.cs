@@ -20,11 +20,12 @@ namespace AutoTrader.Manager.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult ItemsWithoutProduct()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            using (var db = new AutoTrader.Data.TraderEntities())
+            {
+                return View(db.Item.Where(o => !o.Product.HasValue).ToList());
+            }
         }
     }
 }
