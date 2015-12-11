@@ -13,20 +13,43 @@
                     url: "../../Json/LookupProduct?name=" + value,
                 }).done(function (data) {
                     $.each(data, function (index, item) {
-                        $(productListContainer).append("<p>");
-                        $(productListContainer).append("<a>" + item.Name + "</a>");
-                        var existingProducId;
+                        addItemToList(item);
+                    });
+                });
+            };
+
+            function addItemToList(item){
+                var productListContainer = $("#productListContainer")[0];
+        $(productListContainer).append("<p id=\"@Model.Id-"+item.Id+"\">");
+        $(productListContainer).append("<a>" + item.Name + "</a>");
+        var existingProducId;
                         @if (Model.Product != null)
                         {
                             @:existingProducId = @Model.Product1.Id;
                         }
-                        if (existingProducId != item.Id){
-                            $(productListContainer).append("<a onclick=\"mapProduct(@Model.Id,"+item.Id+")\">MAP</a>");
-                        }else{
-                            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UnMAP</a>");
-                        }
-                        $(productListContainer).append("</p>");
-                    });
+        if (existingProducId != item.Id){
+            $(productListContainer).append("<a onclick=\"mapProduct(@Model.Id,"+item.Id+")\">MAP</a>");
+        }else{
+            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UnMAP</a>");
+        }
+        $(productListContainer).append("</p>");
+    }
+
+            function addProduct() {
+                var value = $("[name='Product.Name']").val();
+                $.ajax({
+                    url: "../../Json/AddProduct?name=" + value,
+                }).done(function (data) {
+                    addItemToList(data);
+                });
+            };
+            function mapProduct(itemId, productId) {
+                $.ajax({
+                    url: "../../Json/MapProduct?itemId=" + itemId+"&productId="+productId,
+                }).done(function (data) {
+                    var productListContainer = $("#productListContainer")[0];
+                    $(productListContainer).find("#"+itemId+"-"+productId).remove();
+                    addItemToList(data);
                 });
             };
             function addProduct() {
@@ -34,23 +57,9 @@
                 $.ajax({
                     url: "../../Json/AddProduct?name=" + value,
                 }).done(function (data) {
-                    $(productListContainer).append("<p><a>" + data.Name + "</a></p>");
-                });
-            };
-            function mapProduct() {
-                var value = $("[name='Product.Name']").val();
-                $.ajax({
-                    url: "../../Json/MapProduct?name=" + value,
-                }).done(function (data) {
-                    $(productListContainer).append("<p><a>" + data.Name + "</a></p>");
-                });
-            };
-            function addProduct() {
-                var value = $("[name='Product.Name']").val();
-                $.ajax({
-                    url: "../../Json/AddProduct?name=" + value,
-                }).done(function (data) {
-                    $(productListContainer).append("<p><a>" + data.Name + "</a></p>");
+                    var productListContainer = $("#productListContainer")[0];
+                    $(productListContainer).find("#"+itemId+"-"+productId).remove();
+                    addItemToList(data);
                 });
             };
 </script>
@@ -95,11 +104,15 @@
         </dt>
 
         <dd>
-            <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="" />
-            <a onclick="addProduct()">Add Product</a> 
+            <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="@(Model.Product1 != null ? Model.Product1.Name : "")" />
+            <a id="addProduct" onclick="addProduct()">Add Product</a> 
             <div id="productListContainer">
 
             </div>
+
+            @if (Model.Product1 != null) {
+              <script type="text/javascript">  $(function(){ $("[name='Product.Name']").trigger('keyup'); })</script>
+            }
         </dd>
 
     </dl>

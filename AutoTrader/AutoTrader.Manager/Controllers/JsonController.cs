@@ -33,5 +33,22 @@ namespace AutoTrader.Manager.Controllers
                 return Json(item, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult MapProduct(int itemId, int productId)
+        {
+            using (var db = new Data.TraderEntities())
+            {
+                var product = db.Product.SingleOrDefault(o => o.Id == productId);
+                var item = db.Item.SingleOrDefault(o => o.Id == itemId);
+                if (product!=null && item!=null)
+                {
+                    item.Product = productId;
+                    db.SaveChanges();
+                }
+                var model = db.Item.Include(o => o.Product1).Include(o => o.Product1.ProductKeywords)
+                    .Single(o => o.Id == itemId);
+                return Json(model, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }
