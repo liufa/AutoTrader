@@ -62,8 +62,8 @@ namespace AutoTrader.Manager.Controllers
                     item.Product = null;
                     db.SaveChanges();
                 }
-                var model = db.Item.Single(o => o.Id == itemId);
-                return Json(model, JsonRequestBehavior.AllowGet);
+
+                return Json(product, JsonRequestBehavior.AllowGet);
             }
         }
     }
