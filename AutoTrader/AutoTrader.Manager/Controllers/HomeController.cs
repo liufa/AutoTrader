@@ -26,6 +26,16 @@ namespace AutoTrader.Manager.Controllers
             using (var db = new Data.TraderEntities())
             {
                 var model = db.Item.Where(o => !o.Product.HasValue).ToList();
+                return View("Items",model);
+            }
+        }
+
+        public ActionResult Items(int? page)
+        {
+            var i = page.HasValue ? page.Value : 0;
+            using (var db = new Data.TraderEntities())
+            {
+                var model = db.Item.OrderBy(o => o.Id).Skip(i * 100).Take(100).ToList();
                 return View(model);
             }
         }

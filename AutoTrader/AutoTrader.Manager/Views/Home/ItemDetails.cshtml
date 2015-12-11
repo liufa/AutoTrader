@@ -30,7 +30,7 @@
         if (existingProducId != item.Id){
             $(productListContainer).append("<a onclick=\"mapProduct(@Model.Id,"+item.Id+")\">MAP</a>");
         }else{
-            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UnMAP</a>");
+            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UNMAP</a>");
         }
         $(productListContainer).append("</p>");
     }
@@ -52,10 +52,9 @@
                     addItemToList(data);
                 });
             };
-            function addProduct() {
-                var value = $("[name='Product.Name']").val();
+            function unmapProduct(itemId, productId) {
                 $.ajax({
-                    url: "../../Json/AddProduct?name=" + value,
+                    url: "../../Json/UnmapProduct?itemId=" + itemId+"&productId="+productId,
                 }).done(function (data) {
                     var productListContainer = $("#productListContainer")[0];
                     $(productListContainer).find("#"+itemId+"-"+productId).remove();
