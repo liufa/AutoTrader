@@ -47,5 +47,21 @@ namespace AutoTrader.Manager.Controllers
                 return View(db.Item.Include(o => o.Product1).Single(o => o.Id == id));
             }
         }
+
+        public ActionResult Product(int id)
+        {
+            using (var db = new Data.TraderEntities())
+            {
+                return View(db.Product.Include(o => o.ProductKeywords).Single(o => o.Id == id));
+            }
+        }
+
+        public ActionResult ProductKeywords(int id)
+        {
+            using (var db = new Data.TraderEntities())
+            {
+                return View(db.ProductKeywords.ToList());
+            }
+        }
     }
 }

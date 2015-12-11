@@ -21,7 +21,7 @@
             function addItemToList(item){
                 var productListContainer = $("#productListContainer")[0];
         $(productListContainer).append("<p id=\"@Model.Id-"+item.Id+"\">");
-        $(productListContainer).append("<a>" + item.Name + "</a>");
+        $(productListContainer).append("<a href=\"../Product/"+item.Id+"\">" + item.Name + "</a>");
         var existingProducId;
                         @if (Model.Product != null)
                         {

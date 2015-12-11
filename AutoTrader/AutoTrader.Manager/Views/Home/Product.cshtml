@@ -1,0 +1,83 @@
+﻿@model AutoTrader.Data.Product
+
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Product</h2>
+
+<script type="text/javascript">
+    function lookupProduct(elem) {
+        var value = $(elem).val();
+        var productListContainer = $("#productListContainer")[0];
+        $(productListContainer).empty();
+        $.ajax({
+            url: "../../Json/LookupKeyword?name=" + value,
+        }).done(function (data) {
+            $.each(data, function (index, item) {
+                addItemToList(item);
+            });
+        });
+    };
+
+    function addItemToList(item){
+        var productListContainer = $("#productListContainer")[0];
+        $(productListContainer).append("<p id=\"@Model.Id-"+item.Id+"\">");
+        $(productListContainer).append("<a href=\"../Keyword/"+item.Id+"\">" + item.Name + "</a>");
+        var existingProducId;
+                @if (Model.ProductKeywords != null)
+                {
+                    @:existingKeywords =  ['@Html.Raw(string.Join("','",Model.ProductKeywords.Select(o =>o.Keyword).ToList()))'];
+                }
+        if (existingProducId != item.Id){
+            $(productListContainer).append("<a onclick=\"mapProduct(@Model.Id,"+item.Id+")\">MAP</a>");
+        }else{
+            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UNMAP</a>");
+        }
+        $(productListContainer).append("</p>");
+    }
+    function addProduct() {
+        var value = $("[name='Product.Name']").val();
+        window.location = "../../Json/AddKeyword?name=" + value + "&productId=@Model.Id";
+    };
+  
+    function unmapProduct(itemId, productId) {
+        $.ajax({
+            url: "../../Json/DeleteKeyword?keywordId=" + itemId + "&productId=" + productId,
+        }).done(function (data) {
+            var productListContainer = $("#productListContainer")[0];
+            $(productListContainer).find("#" + itemId + "-" + productId).remove();
+            addItemToList(data);
+        });
+    };
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Product</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @{Html.RenderPartial("ProductKeywords", Model.ProductKeywords);}
+
+        <dd>
+            <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="" />
+            <a id="addProduct" onclick="addProduct()">Add Keyword</a>
+            <div id="productListContainer">
+
+            </div>
+        </dd>
+        </div>
+        }

@@ -66,5 +66,48 @@ namespace AutoTrader.Manager.Controllers
                 return Json(product, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public JsonResult LookupKeyword(string name)
+        {
+            var model = new List<ProductKeywords>();
+            using (var db = new Data.TraderEntities())
+            {
+                db.Configuration.LazyLoadingEnabled = false;
+                model = db.ProductKeywords.Where(o => o.Keyword.Contains(name)).ToList();
+            }
+            return Json(model, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AddKeyword(string name, int productId)
+        {
+            using (var db = new Data.TraderEntities())
+            {
+                if (!db.ProductKeywords.Any(o => o.Keyword == name && o.Product == productId))
+                {
+                    db.ProductKeywords.Add(new Data.ProductKeywords { Keyword = name, Product = productId });
+                    db.SaveChanges();
+                }
+
+                var item = db.ProductKeywords.Single(o => o.Keyword == name && o.Product == productId);
+                return RedirectToAction("Product", "Home", new { id = productId });
+            }
+        }
+        
+        public ActionResult DeleteKeyword(int keywordId)
+        {
+            int? productId;
+            using (var db = new Data.TraderEntities())
+            {
+                var keyword = db.ProductKeywords.SingleOrDefault(o => o.Id == keywordId);
+                productId = keyword.Product;
+                if (keyword != null)
+                {
+                    db.ProductKeywords.Remove(keyword);
+                    db.SaveChanges();
+                }
+            }
+
+            return RedirectToAction("Product", "Home", new { id = productId });
+        }
     }
 }
