@@ -103,7 +103,7 @@
         </dt>
 
         <dd>
-            <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="@(Model.Product1 != null ? Model.Product1.Name : "")" />
+            <input style="width:600px; max-width:none" class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="@(Model.Product1 != null ? Model.Product1.Name : "")" />
             <a id="addProduct" onclick="addProduct()">Add Product</a> 
             <div id="productListContainer">
 

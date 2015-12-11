@@ -8,35 +8,7 @@
 <h2>Product</h2>
 
 <script type="text/javascript">
-    function lookupProduct(elem) {
-        var value = $(elem).val();
-        var productListContainer = $("#productListContainer")[0];
-        $(productListContainer).empty();
-        $.ajax({
-            url: "../../Json/LookupKeyword?name=" + value,
-        }).done(function (data) {
-            $.each(data, function (index, item) {
-                addItemToList(item);
-            });
-        });
-    };
 
-    function addItemToList(item){
-        var productListContainer = $("#productListContainer")[0];
-        $(productListContainer).append("<p id=\"@Model.Id-"+item.Id+"\">");
-        $(productListContainer).append("<a href=\"../Keyword/"+item.Id+"\">" + item.Name + "</a>");
-        var existingProducId;
-                @if (Model.ProductKeywords != null)
-                {
-                    @:existingKeywords =  ['@Html.Raw(string.Join("','",Model.ProductKeywords.Select(o =>o.Keyword).ToList()))'];
-                }
-        if (existingProducId != item.Id){
-            $(productListContainer).append("<a onclick=\"mapProduct(@Model.Id,"+item.Id+")\">MAP</a>");
-        }else{
-            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UNMAP</a>");
-        }
-        $(productListContainer).append("</p>");
-    }
     function addProduct() {
         var value = $("[name='Product.Name']").val();
         window.location = "../../Json/AddKeyword?name=" + value + "&productId=@Model.Id";
@@ -73,7 +45,7 @@
         @{Html.RenderPartial("ProductKeywords", Model.ProductKeywords);}
 
         <dd>
-            <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="" />
+            <input class="text-box single-line" name="Product.Name" type="text" value="" />
             <a id="addProduct" onclick="addProduct()">Add Keyword</a>
             <div id="productListContainer">
 
