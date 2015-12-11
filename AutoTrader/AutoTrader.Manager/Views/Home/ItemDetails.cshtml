@@ -10,11 +10,39 @@
                 var productListContainer = $("#productListContainer")[0];
                 $(productListContainer).empty();
                 $.ajax({
-                    url: "../../Json/LookupProduct?name="+value,
+                    url: "../../Json/LookupProduct?name=" + value,
                 }).done(function (data) {
                     $.each(data, function (index, item) {
-                        $(productListContainer).append("<p><a>" + item.Name + "</a></p>");
+                        $(productListContainer).append("<p>");
+                        $(productListContainer).append("<a>" + item.Name + "</a>");
+                        var existingProducId;
+                        @if (Model.Product != null)
+                        {
+                            @:existingProducId = @Model.Product1.Id;
+                        }
+                        if (existingProducId != item.Id){
+                            $(productListContainer).append("<a onclick=\"mapProduct(@Model.Id,"+item.Id+")\">MAP</a>");
+                        }else{
+                            $(productListContainer).append("<a onclick=\"unmapProduct(@Model.Id,"+item.Id+")\">UnMAP</a>");
+                        }
+                        $(productListContainer).append("</p>");
                     });
+                });
+            };
+            function addProduct() {
+                var value = $("[name='Product.Name']").val();
+                $.ajax({
+                    url: "../../Json/AddProduct?name=" + value,
+                }).done(function (data) {
+                    $(productListContainer).append("<p><a>" + data.Name + "</a></p>");
+                });
+            };
+            function mapProduct() {
+                var value = $("[name='Product.Name']").val();
+                $.ajax({
+                    url: "../../Json/MapProduct?name=" + value,
+                }).done(function (data) {
+                    $(productListContainer).append("<p><a>" + data.Name + "</a></p>");
                 });
             };
             function addProduct() {
@@ -68,7 +96,7 @@
 
         <dd>
             <input class="text-box single-line" name="Product.Name" type="text" onkeyup="lookupProduct(this);" value="" />
-            <a onclick="addProduct()">Add Product</a>
+            <a onclick="addProduct()">Add Product</a> 
             <div id="productListContainer">
 
             </div>
